@@ -8,7 +8,57 @@ I build software at **Hypler**, an independent software company based in Las Veg
 
 Several substantial projects are being built in the open. The repositories show the implementation, design decisions, contracts, and development history behind the work.
 
+## IZIOS · Diamond Scout and commerce infrastructure
+
+<a href="https://izios.com/"><img src="assets/izios-logo.svg" alt="IZIOS" width="180"></a>
+
+I build [**IZIOS**](https://hypler.com/projects/izios-diamond-platform), a lab-grown diamond commerce and data platform. The work connects supplier ingestion, normalized catalog records, product availability, search, customer interfaces, and reusable developer services. Its full application is private; selected integrations and widgets are published separately.
+
+<img src="assets/diamond-scout.webp" alt="Diamond Scout product illustration: a robot examining diamonds" width="800">
+
+*Diamond Scout product illustration; conceptual artwork, not a search-result screenshot.*
+
+### Diamond Scout: language, filters, and retrieval
+
+[Diamond Scout](https://izios.com/diamond-scout) translates a buyer's request into a constrained search over diamond records. The implementation combines language-model query interpretation, structured filters, and semantic retrieval with **PostgreSQL and pgvector**. Exact stock or certificate references provide a separate lookup path. Results retain listing, certificate, and media links where available.
+
+The engineering extends beyond a chat interface:
+
+- **Individual stones and matched sets:** search supports single-stone requests and matching requirements for pairs and trios.
+- **Availability-aware results:** buyer-facing projections exclude archived, unavailable, and held records rather than treating every ingested record as saleable inventory.
+- **Separate ranking signals:** Scout relevance, LightScore, and SmartPrice are distinct signals rather than interchangeable guarantees.
+- **Search refinement:** further refinement work is in launch preparation.
+- **Clear decision boundaries:** discovery and comparison remain separate from purchase authorization and payment operations.
+
+The latest refinement and integration work is in launch preparation; source implementation does not establish general availability.
+
+### Agent access: MCP and WebMCP
+
+Current development includes **Model Context Protocol (MCP)** access and a separate **browser WebMCP** interface. These expose buyer-facing discovery capabilities through defined tool contracts rather than giving an agent unrestricted application access.
+
+The current MCP implementation defines three read-only tools:
+
+| Tool | Purpose |
+| --- | --- |
+| `ask_diamond_scout` | Search public-facing diamond listings. |
+| `get_diamond_answer` | Retrieve reviewed diamond-education answers. |
+| `get_metals_data_access` | Discover metals-data access metadata, not live price quotes. |
+
+Remote MCP access requires an authenticated session or approved credentials and remains subject to access controls. WebMCP is a distinct browser integration for search and comparison workflows. Neither interface grants payment, order-creation, or account-mutation authority. These integrations are being prepared for rollout; no universal client compatibility or launch date is claimed.
+
+### Developer services and platform depth
+
+The [developer portal](https://izios.com/developers) brings together diamond-data interfaces and metals resources. The public [OpenAPI document](https://izios.com/api/openapi.json) describes the public diamond API. The [Precious Metals Widgets](https://github.com/hypler-dev/izios-precious-metals-widget) repository provides MIT-licensed JavaScript embeds for gold, silver, platinum, and palladium displays and historical charts. Market-data rights and attribution remain separate from the widget code license.
+
+<img src="assets/izios-developers.png" alt="Public IZIOS developer portal case-study capture" width="800">
+
+*Existing public case-study capture of the developer portal; not a depiction of the latest launch interface.*
+
+The application stack includes **React, TypeScript, Vite, Node.js, Express, PostgreSQL, Drizzle, and pgvector**. Work spans incremental synchronization, relational constraints, source-aware availability, vector retrieval, customer-facing search, administrative review, and commerce boundaries. The June 2026 public case study documents **more than 1.8 million active and archived records across catalog history**. That historical count is not a current saleable-inventory figure.
+
 ## Building in the open
+
+<img src="assets/rangoon.webp" alt="Rangoon logo" width="72">
 
 ### [Rangoon](https://github.com/hypler-dev/rangoon)
 
@@ -22,6 +72,8 @@ An authorization and evidence engine for consequential agent actions. LNSAT sepa
 
 The source combines **Rust, TypeScript, and SQLite** around a Gateway boundary. Work covers versioned action contracts, deterministic policy, scoped approvals, one-time authorization consumption, bounded execution-attempt records, durable receipts, and reconciliation of uncertain results. MCP, API, CLI, and application interfaces share the same authority model.
 
+<img src="assets/vusl-logo.png" alt="VUSL logo" width="220">
+
 ### [VUSL](https://github.com/hypler-dev/vusl)
 
 An independent semantic interoperability specification and experimental **Rust core**, supported by **Python conformance tooling**. VUSL describes native source identity, semantic fidelity, translation loss, relationships, evidence, and uncertainty explicitly.
@@ -29,14 +81,6 @@ An independent semantic interoperability specification and experimental **Rust c
 Its engineering work includes canonical bytes, scoped identifiers, immutable typed results, bounded parsing, independent conformance expectations, and meaning-preservation checks. VUSL develops independently of Rangoon and LNSAT; Rangoon is its planned first consumer.
 
 **Rangoon, LNSAT, and VUSL are in development.** Their repositories track implementation progress, validation, and release status. Planned integrations and platform targets are documented separately from delivered support.
-
-## Commercial platform work
-
-[**IZIOS**](https://hypler.com/projects/izios-diamond-platform) is a diamond data and commerce platform connecting supplier ingestion, normalized product records, structured and semantic search, customer workflows, and reusable APIs. Its June 2026 project record documents more than **1.8 million active and archived records** across the platform's catalog history.
-
-The documented stack includes **React, TypeScript, Node.js, Express, PostgreSQL, and pgvector**. Work spans incremental synchronization, source-controlled availability, relational constraints, vector retrieval, administrative review, and boundaries between discovery, holds, and payments. The linked case study describes the platform; its full application is not an open-source release.
-
-The public [**IZIOS Precious Metals Widgets**](https://github.com/hypler-dev/izios-precious-metals-widget) repository provides a smaller MIT-licensed component: embeddable JavaScript price displays and historical charts for gold, silver, platinum, and palladium.
 
 ## Technologies and where I use them
 
